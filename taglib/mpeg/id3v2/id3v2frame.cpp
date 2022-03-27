@@ -583,7 +583,7 @@ unsigned int Frame::Header::size(unsigned int version)
 Frame::Header::Header(const ByteVector &data, bool synchSafeInts) :
   d(new HeaderPrivate())
 {
-  setData(data, synchSafeInts);
+  setData(data, synchSafeInts ? 4u : 3u);
 }
 
 Frame::Header::Header(const ByteVector &data, unsigned int version) :
@@ -599,7 +599,7 @@ Frame::Header::~Header()
 
 void Frame::Header::setData(const ByteVector &data, bool synchSafeInts)
 {
-  setData(data, static_cast<unsigned int>(synchSafeInts ? 4 : 3));
+  setData(data, synchSafeInts ? 4u : 3u);
 }
 
 void Frame::Header::setData(const ByteVector &data, unsigned int version)

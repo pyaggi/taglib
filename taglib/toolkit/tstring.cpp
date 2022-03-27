@@ -34,7 +34,7 @@
 #include <tutils.h>
 
 #include "tstring.h"
-
+#include <string>
 namespace
 {
   using namespace TagLib;
@@ -374,11 +374,13 @@ String & String::clear()
   *this = String();
   return *this;
 }
-
 String String::upper() const
 {
   String s;
-  s.d->data.reserve(size());
+
+  //work around memory bug? triggered in libstdc++
+  //  s.d->data.reserve(size());
+  s.d->data.reserve(std::max(32u,size()));
 
   for(ConstIterator it = begin(); it != end(); ++it) {
     if(*it >= 'a' && *it <= 'z')
@@ -687,7 +689,6 @@ void String::swap(String &s)
 
   swap(d, s.d);
 }
-
 bool String::operator<(const String &s) const
 {
   return (d->data < s.d->data);
